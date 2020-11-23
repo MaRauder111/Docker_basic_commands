@@ -1,0 +1,255 @@
+Run command from and image
+
+	docker run nginx
+
+ps list containers
+//To check currently running
+	docker ps
+// TO check all running or not
+	docker ps -a
+
+
+STOP a container
+
+	docker ps 
+
+	docker stop container_name
+
+	docker ps -a
+
+Rm - Remove a container
+
+	docker rm container_name
+
+	docker ps -a
+
+
+List images
+
+	docker images
+
+Remove images
+
+	docker rmi image_name nginx
+
+	docker pull nginx
+
+
+Eg:
+	docker run ubuntu
+
+	docker ps
+
+	docker ps  -a
+
+Append a command
+
+	docker run ubuntu
+	
+	docker run ubuntu sleep 5
+
+Exec -  execute a command
+
+	docker ps -a
+
+	docker exec container_name cat /etc/hosts
+
+Run -  attach and detach
+// Running a website
+	docker run Marauder/simple-webpage
+
+// Running docker in the background
+	docker run -d Marauder/simple-webpage
+
+//a043 is the running address
+	docker attach a043d
+
+Run - tag 
+	docker run redis
+
+//run a specific version
+	docker run redis:4.0
+
+
+Run -STDIN
+
+	./app.sh
+
+	Welcome! Please enter your name : Hangout
+
+	Hello and Welcome Hangout
+
+
+//Docker doesnt listen to the standart input
+	docker run Marauder/simple-hello
+
+	Hello and Welcome !
+
+//Using -i command to get userinput
+	docker run -i Marauder/simple-hello
+	Hangout
+
+	Hello and Welcome Hangout
+
+//Using -it command to get terminal
+	docker run -it Marauder/simple-hello
+	Welcome! Please enter your name : Hangout
+
+	Hello and Welcome Hangout
+
+Run - PORT mapping
+//The website is listening to port no. 5000 docker create a ip address inside docker container
+	docker run Marauder/simple-webpage
+	*Running on https://0.0.0:5000 (Press CTRL+C to quit)
+
+//How other can acess my docker container with another port no.
+	docker run -p 80:5000 Marauder/simple-webpage
+
+	docker run -p 90:5000 Marauder/simple-webpage
+	docker run -p 60:5000 Marauder/simple-webpage
+	docker run -p 63:3600 mongoDB
+	docker run -p 69:3600 mongoDB
+//Can't map the same host
+	docker run -p 63:3600 mongoDB
+
+RUN - Volume mapping
+	docker run mysql
+
+	docker stop mysql
+	docker rm mysql
+
+	docker run -v /opt/datadir:/var/lib/mysql mysql
+
+Inspect Container
+	docker inspect blissful_hopper
+
+Container Logs
+	docker logs blissful_hopper
+
+Environment Variables
+// Simple  python program to run html with red background
+// web_color.py
+
+	import os
+	from flask import Flask
+
+	app = Flask(__name__)
+
+	color = "red"
+
+	@app.route("/")
+	def main():
+	print(color)
+		return render_templater('Hello html', color = color)
+	
+	if __name__ == '__main__'
+		app.run(host="0.0.0.0", port = "8080"
+
+// modification in color
+	import os
+	from flask import Flask
+
+	app = Flask(__name__)
+
+	color = os.environ.get('APP_COLOR')
+
+	@app.route("/")
+	def main():
+	print(color)
+		return render_templater('Hello html', color = color)
+	
+	if __name__ == '__main__'
+		app.run(host="0.0.0.0", port = "8080"
+
+	
+export APP_COLOR = blue; python web_color.py
+// Now the background red will be change to blue
+
+	docker run -e APP_COLOR = blue web_image
+
+	docker run -e APP_COLOR = green web_image
+
+	docker inspect bliss_hopper
+	//look for ENV variable and you can change
+
+How to create your own image?
+	1. OS- Ubuntu
+	2. Update apt repo
+	3. Install dependencies using apt
+	4. Install python dependencies using pip
+	5. Copy source code to /opt folder
+	6. Run the web server using "flask" command
+
+	
+	Dockerfile
+	
+	FROM Ubuntu
+	
+	RUN apt-get update
+	RUN apt-get install python
+
+	RUN pip install flask
+	RUN pip install flask-msql
+
+	COPY . /opt/source-code
+
+	ENTRYPOINT FLASK_APP=/opt/source-code/app.py flask run
+
+
+	//used it to run the Dockerfile
+	docker build Dockerfile -t Marauder/my_app
+
+	docker push Marauder/my_app
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
